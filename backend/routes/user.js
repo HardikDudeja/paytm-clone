@@ -48,7 +48,8 @@ userRouter.post("/signin", async (req, res) => {
     if(user.password != password){
         return res.status(401).json({message: "Incorrect password."})
     }
-    res.json({message: "You are logged in now" });
+    const token = jwt.sign(req.body, process.env.JWT_SECRET)
+    res.json({message: "You are logged in now", token: token });
 })
 
 module.exports = userRouter;
