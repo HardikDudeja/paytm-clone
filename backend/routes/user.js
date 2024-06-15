@@ -1,6 +1,6 @@
 const express = require("express");
 const { signupSchema, loginSchema, updateSchema } = require("../inputSchema");
-const { User } = require("../db");
+const { User, Account } = require("../db");
 const jwt = require("jsonwebtoken");
 const { authMiddleware } = require("../middleware");
 
@@ -25,6 +25,12 @@ userRouter.post("/signup", async (req, res) => {
 
     const newUser = new User(req.body);
     await newUser.save();
+
+    const account = new Account({
+        userId: newUser._id,
+        balance: 10000
+    });
+    await account.save();
 
     // or do the below
     // const newUser = await User.create(req.body)

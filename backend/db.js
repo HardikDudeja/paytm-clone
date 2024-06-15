@@ -1,5 +1,7 @@
 require('dotenv').config();
 const mongoose = require("mongoose");
+const {Schema} = require("mongoose");
+
 
 mongoose.connect(process.env.DATABASE_URL).then(() => {
     console.log("connected to DB");
@@ -14,7 +16,7 @@ const userSchema = new mongoose.Schema({
 
 const accountSchema = new mongoose.Schema({
     userId: {type: Schema.Types.ObjectId, ref: 'User', required: true},
-    balance: {type: number, required: true}
+    balance: {type: Number, required: true}
 });
 
 
