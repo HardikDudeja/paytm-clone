@@ -8,7 +8,7 @@ const userRouter = express.Router();
 userRouter.post("/signup", async (req, res) => {
     const validation = signupSchema.safeParse(req.body);
     if(!validation.success){
-        return res.status(400).json({errors: validation.error.errors})
+        return res.status(400).json({errors: validation.error})
     }
 
     const {userName} = req.body
