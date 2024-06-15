@@ -1,7 +1,8 @@
 const express = require("express");
-const { signupSchema, loginSchema } = require("../inputSchema");
+const { signupSchema, loginSchema, updateSchema } = require("../inputSchema");
 const { User } = require("../db");
 const jwt = require("jsonwebtoken");
+const { authMiddleware } = require("../middleware");
 
 const userRouter = express.Router();
 
@@ -50,6 +51,38 @@ userRouter.post("/signin", async (req, res) => {
     }
     const token = jwt.sign(req.body, process.env.JWT_SECRET)
     res.json({message: "You are logged in now", token: token });
+});
+
+// updating the user data
+
+userRouter.put("/", authMiddleware, async (req, res) => {
+    const validation = updateSchema.safeParse(req.body);
+    if(!validation.success){
+        res.status(422).json({errors: validation.error})
+    }
+    const result = await User.updateOne({userName: req.userName}, req.body)
+    if(result.acknowledged){
+        res.json({message: "Updated successfully"})
+    }
+    else{
+        res.status(400).json({message: "Failed to update"})
+    }
+});
+
+userRouter.get("/bulk", authMiddleware, async (req, res) => {
+    const filter = req.query.filter;
+    console.log("printing filter", filter);
+    try {
+        const users = await User.find({
+            $or: [
+                {firstName: {$regex: filter, $options: 'i'}},
+                {lastName: {$regex: filter, $options: 'i'}}
+            ]
+        });
+        res.json({users})
+    } catch (error) {
+        res.status(404).json({message: "User not found"});
+    }
 })
 
 module.exports = userRouter;

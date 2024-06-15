@@ -10,6 +10,12 @@ const signupSchema = z.object({
 const loginSchema = z.object({
     userName: z.string().min(1, "email is required"),
     password: z.string().min(1, "password is required")
-})
+});
 
-module.exports = { signupSchema, loginSchema }
+const updateSchema = z.object({
+    password: z.string().optional(),
+    firstName: z.string().optional(),
+    lastName: z.string().optional()
+}).strict();
+
+module.exports = { signupSchema, loginSchema, updateSchema }
