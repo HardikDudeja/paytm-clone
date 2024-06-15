@@ -12,9 +12,17 @@ const userSchema = new mongoose.Schema({
     lastName: String
 });
 
+const accountSchema = new mongoose.Schema({
+    userId: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    balance: {type: number, required: true}
+});
+
+
 const User = mongoose.model("User", userSchema);
+const Account = mongoose.model("Account", accountSchema);
 
 
 module.exports = {
-    User
+    User,
+    Account
 }
