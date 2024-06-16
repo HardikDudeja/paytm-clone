@@ -55,7 +55,8 @@ userRouter.post("/signin", async (req, res) => {
     if(user.password != password){
         return res.status(401).json({message: "Incorrect password."})
     }
-    const token = jwt.sign(req.body, process.env.JWT_SECRET)
+    const userId = user._id
+    const token = jwt.sign({userId}, process.env.JWT_SECRET)
     res.json({message: "You are logged in now", token: token });
 });
 
