@@ -22,7 +22,6 @@ userRouter.post("/signup", async (req, res) => {
             message: "User Name already exists"
         });
     }
-
     const newUser = new User(req.body);
     await newUser.save();
 
