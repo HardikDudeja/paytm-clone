@@ -77,7 +77,6 @@ userRouter.put("/", authMiddleware, async (req, res) => {
 
 userRouter.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter;
-    console.log("printing filter", filter);
     try {
         const users = await User.find({
             $or: [
@@ -89,6 +88,6 @@ userRouter.get("/bulk", authMiddleware, async (req, res) => {
     } catch (error) {
         res.status(404).json({message: "User not found"});
     }
-})
+});
 
 module.exports = userRouter;

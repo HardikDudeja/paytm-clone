@@ -6,6 +6,7 @@ import { Heading } from "../components/Heading";
 import { InputBox } from "../components/InputBox";
 import { SubHeading } from "../components/SubHeading";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export const Signup = () => {
   const [firstName, setFirstName] = useState("");
@@ -13,12 +14,14 @@ export const Signup = () => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
+  const navigate = useNavigate();
+
   return (
     <div className="bg-black h-screen flex">
       <div className="flex w-2/3 items-center">
         <div className="rounded-lg bg-white p-2 px-4 w-full">
           <Heading label={"Sign up"} />
-          <SubHeading label={"Enter your infromation to create an account"} />
+          <SubHeading label={"Enter your information to create an account"} />
           <InputBox onChange = {(e) => setFirstName(e.target.value)} label={"First Name"} />
           <InputBox onChange = {(e) => setLastName(e.target.value)} label={"Last Name"} />
           <InputBox onChange = {(e) => setUserName(e.target.value)} label={"Email"} />
@@ -31,7 +34,10 @@ export const Signup = () => {
                 firstName, 
                 lastName
               }
-            ).then((response) => console.log("response", response)).catch((e) => console.log("error", e))} label={"Sign up"} />
+            ).then((response) => {
+                localStorage.setItem("token", response.data.token);
+                navigate("/dashboard")
+              }).catch((e) => console.log("error", e))} label={"Sign up"} />
           </div>
           <BottomWarning
             label={"Already have an account?"}
